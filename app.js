@@ -15,9 +15,11 @@ const addTextWatermarkToImage = async function (inputFile, outputFile, text) {
     image.print(font, 0, 0, textData, image.getWidth(), image.getHeight());
     await image.quality(100).writeAsync(outputFile);
 
-  } catch {
-    console.log('Something went wrong... Try again!');
+  } catch(error) {
+    console.log(Error.prototype.name);
   }
+  const status = await addTextWatermarkToImage()
+  console.log(status)
 };
 
 const addImageWatermarkToImage = async function (inputFile, outputFile, watermarkFile) {
@@ -33,9 +35,11 @@ const addImageWatermarkToImage = async function (inputFile, outputFile, watermar
     });
     await image.quality(100).writeAsync(outputFile);
 
-  } catch {
-    console.log('Something went wrong... Try again!');
+  } catch(error){
+    console.log(Error.prototype.name);
   }
+  const status = await addImageWatermarkToImage()
+  console.log(status)
 };
 
 const prepareOutputTextWatermarkFilename = (textFilename) => {
@@ -49,7 +53,7 @@ const prepareOutputImageWatermarkFilename = (imageFilename) => {
 }
 
 const startApp = async () => {
-
+  
   // Ask if user is ready
   const answer = await inquirer.prompt([{
     name: 'start',
@@ -79,6 +83,7 @@ const startApp = async () => {
       message: 'Type your watermark text:',
     }]);
     options.watermarkText = text.value;
+    
 
     if (fs.existsSync('./img/' + options.inputImage)) {
       addTextWatermarkToImage('./img/' + options.inputImage, './img/' + prepareOutputTextWatermarkFilename(options.inputImage), options.watermarkText);
